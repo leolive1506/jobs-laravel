@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\SendNotificationsJob;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('send-notifications-to-all', function () {
+    SendNotificationsJob::dispatch();
+
+    return 'Finish';
 });
