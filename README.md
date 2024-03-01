@@ -20,3 +20,9 @@ User::limit(10)->get()->each(fn ($user) => $user->notify(new SantamJobTop()));
 
 # Especificar qual fila
 ->onQueue('fila')
+
+# Adicionar delay
+```php
+        ProcessPodcast::dispatch($podcast)
+                    ->delay(now()->addMinutes(10));
+```
