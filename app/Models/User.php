@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function vipCustomer()
+    {
+        return $this->email == 'leonardolivelopes2@gmail.com';
+    }
 }

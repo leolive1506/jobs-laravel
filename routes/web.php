@@ -1,6 +1,8 @@
 <?php
 
 use App\Jobs\SendNotificationsJob;
+use App\Jobs\UserInfoJob;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +22,14 @@ Route::get('/', function () {
 
 Route::get('send-notifications-to-all', function () {
     SendNotificationsJob::dispatch();
+
+    return 'Finish';
+});
+
+Route::get('user-info', function () {
+    UserInfoJob::dispatch(
+        User::where('email', 'leonardolivelopes2@gmail.com')->firstOrFail()
+    );
 
     return 'Finish';
 });

@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\RateLimiter;
 
 class SendNotificationJob implements ShouldQueue
 {
@@ -21,12 +22,18 @@ class SendNotificationJob implements ShouldQueue
     {
         //
     }
-
     /**
      * Execute the job.
+
      */
     public function handle(): void
     {
         $this->user->notify(new SantamJobTop());
+    }
+
+    public function middleware(): array
+    {
+        // return [new RateLimiter('backups')];
+        return [];
     }
 }

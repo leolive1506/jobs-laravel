@@ -10,3 +10,13 @@ AO trabalhar com jobs, o ideal é que seja executado rapidamente
     - SendNotificationsJob
     - SendNotificationJob
 - Com isso cada usuário terá seu job e seu tempo de execução e o trabalho do job pai será apenas disparar os outros eventos
+
+- **OBS:** notificaçõs (artisan make:notification) já é um job, para usá-lo como job basta implementar a classe ShouldQueue e disparar a notificação diretamente do pai
+```php
+User::limit(10)->get()->each(fn ($user) => SendNotificationJob::dispatch($user));
+// para
+User::limit(10)->get()->each(fn ($user) => $user->notify(new SantamJobTop()));
+```
+
+# Especificar qual fila
+->onQueue('fila')
