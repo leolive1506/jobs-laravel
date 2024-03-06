@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        RateLimiter::for('notifications', fn () => Limit::perMinute(10));
         // RateLimiter::for('backups', function (object $job) {
         //     return $job->user->vipCustomer()
         //                 ? Limit::none()

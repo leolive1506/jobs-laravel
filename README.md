@@ -26,3 +26,7 @@ User::limit(10)->get()->each(fn ($user) => $user->notify(new SantamJobTop()));
         ProcessPodcast::dispatch($podcast)
                     ->delay(now()->addMinutes(10));
 ```
+
+# Batch
+- sequencia de processos que um depende do outro
+    - ex: compra: valida cartão -> cobrança
