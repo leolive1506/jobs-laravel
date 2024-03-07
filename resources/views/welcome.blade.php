@@ -1,17 +1,8 @@
-<div>
-    <h1>Batches</h1>
-    @foreach($batches as $item)
-        <div>
-            <h2>{{ $item->name }}</h2>
-            <div>
-                TotalJobs: {{ $item->totalJobs }}
-            </div>
-            <div>
-                PendingJobs: {{ $item->pendingJobs }}
-            </div>
-            <div>
-                FailedJobs: {{ $item->failedJobs }}
-            </div>
-        </div>
-    @endforeach
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
+
+    <ul role="list" class="divide-y divide-gray-200">
+        @foreach ($batches as $batch)
+            <x-batch :batch="$batch" />
+        @endforeach
+    </ul>
 </div>
