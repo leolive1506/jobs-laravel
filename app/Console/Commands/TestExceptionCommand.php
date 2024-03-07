@@ -34,14 +34,16 @@ class TestExceptionCommand extends Command
         $user2 = User::query()->offset(1)->first();
         $user3 = User::query()->offset(3)->first();
 
-        Bus::batch([
+        Bus::chain([
             new TestExceptionJob($user1, true),
             new TestExceptionJob($user2, false),
             new TestExceptionJob($user3, false)
-        ])->catch(function (Batch $batch, Throwable $e) {
-            // First batch job failure detected...
-            info('Primeiro job falhou: ' . $e);
-            $batch->cancel();
-        })->dispatch();
+        ])
+        // ->catch(function (Batch $batch, Throwable $e) {
+        //     // First batch job failure detected...
+        //     info('Primeiro job falhou: ' . $e);
+        //     $batch->cancel();
+        // })
+        ->dispatch();
     }
 }

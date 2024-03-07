@@ -66,6 +66,12 @@ if ($this->needsToFail) {
 ```
 ## Chain
 - deixa uma depencia muito forte entre os jobs e so para o próximo, caso tenha sucesso no anterior
+
+## Batch X Chain
+- batch eu acompanho um progresso de jobs e posso querer não executar um job caso o batch seja cancelado
+- no chain, um job depende do sucesso do anterior
+- mas posso ter dentro batch um chain para ter o controle de um job p outro
+
 # [Horizon](https://laravel.com/docs/10.x/horizon#main-content)
 - Painel para gerenciamenot de filas
 ```sh

@@ -16,7 +16,7 @@ use function Psy\debug;
 
 class TestExceptionJob implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -33,12 +33,12 @@ class TestExceptionJob implements ShouldQueue
      */
     public function handle(): void
     {
-        sleep(5);
-        info('Cancelado: ' . json_encode($this->batch()->cancelled()));
-        if ($this->batch()->cancelled()) {
-            info('batch cancelado');
-            return;
-        }
+        // sleep(5);
+        // info('Cancelado: ' . json_encode($this->batch()->cancelled()));
+        // if ($this->batch()->cancelled()) {
+        //     info('batch cancelado');
+        //     return;
+        // }
 
         info($this->user->name);
 
