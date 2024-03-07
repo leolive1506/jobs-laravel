@@ -1,8 +1,13 @@
 <?php
 
+use App\Jobs\MakeOrder;
+use App\Jobs\RunPayment;
 use App\Jobs\SendNotificationsJob;
 use App\Jobs\UserInfoJob;
+use App\Jobs\ValidateCard;
 use App\Models\User;
+use Illuminate\Bus\BatchRepository;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +37,24 @@ Route::get('user-info', function () {
     );
 
     return 'Finish';
+});
+
+
+Route::get('run-batch', function () {
+    Bus::batch([
+        new MakeOrder,
+        new ValidateCard,
+        new RunPayment
+    ])
+    ->name('Run batch example ' . rand(1, 10))
+    ->dispatch();
+
+    return redirect('/');
+});
+
+
+Route::get('/', function (BatchRepository $batchRepository) {
+    return view('welcome', [
+        'batches' => $batchRepository->get()
+    ]);
 });

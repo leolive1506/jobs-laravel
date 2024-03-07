@@ -27,7 +27,6 @@ class SendNotification extends Command
      */
     public function handle()
     {
-        // User::all()->each(fn (User $user) => $user->notify());
         $this->withProgressBar(
             User::all(),
             fn (User $user) => $user->notify(new SantamJobTop())

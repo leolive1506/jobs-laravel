@@ -27,6 +27,24 @@ User::limit(10)->get()->each(fn ($user) => $user->notify(new SantamJobTop()));
                     ->delay(now()->addMinutes(10));
 ```
 
-# Batch
+# [Batch](https://laravel.com/docs/10.x/queues#job-batching)
 - sequencia de processos que um depende do outro
     - ex: compra: valida cartão -> cobrança
+- utliza banco de dados para controlar
+```sh
+php artisan queue:batches-table
+ 
+php artisan migrate
+```
+- Jobs precisam ter trait Batchable
+- allowFailures
+    - fala que se um job falhar pode executar os outros, um não depende do outro
+
+# [Horizon](https://laravel.com/docs/10.x/horizon#main-content)
+- Painel para gerenciamenot de filas
+```sh
+composer require laravel/horizon
+php artisan horizon:install
+# toda vez que fizer alteração no código, tem que parar esse comando e rodar de novo
+php artisan horizon
+```
