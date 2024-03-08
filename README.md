@@ -71,7 +71,47 @@ if ($this->needsToFail) {
 - batch eu acompanho um progresso de jobs e posso querer não executar um job caso o batch seja cancelado
 - no chain, um job depende do sucesso do anterior
 - mas posso ter dentro batch um chain para ter o controle de um job p outro
-
+    - somente batch
+    ```php
+        Bus::batch([
+            new TestExceptionJob($user1, true),
+            new TestExceptionJob($user2, false),
+            new TestExceptionJob($user3, false)
+        ])
+        ->catch(function (Batch $batch, Throwable $e) {
+            // First batch job failure detected...
+            info('Primeiro job falhou: ' . $e);
+            $batch->cancel();
+        })
+        ->dispatch();
+    ```
+    - somente chain
+    ```php
+        Bus::chain([
+            new TestExceptionJob($user1, true),
+            new TestExceptionJob($user2, false),
+            new TestExceptionJob($user3, false)
+        ])
+        ->dispatch();
+    ```
+    - chain dentro do batch
+    ```php
+    // um batch que dentro tem uma lista de users, que podem ser executandos sem uam corrente (chain)
+    // mas dentro de um batch, posso ter quantos chain quiser
+    Bus::batch([
+        ...$users,
+        [
+            new TestExceptionJob($user1, true),
+            new TestExceptionJob($user2, false),
+            new TestExceptionJob($user3, false)
+        ],
+        [
+            new TestExceptionJob($user4, false),
+            new TestExceptionJob($user5, true),
+            new TestExceptionJob($user6, false)
+        ]
+    ])
+    ```
 # [Horizon](https://laravel.com/docs/10.x/horizon#main-content)
 - Painel para gerenciamenot de filas
 ```sh

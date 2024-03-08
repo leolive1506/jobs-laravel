@@ -34,10 +34,25 @@ class TestExceptionCommand extends Command
         $user2 = User::query()->offset(1)->first();
         $user3 = User::query()->offset(3)->first();
 
-        Bus::chain([
-            new TestExceptionJob($user1, true),
-            new TestExceptionJob($user2, false),
-            new TestExceptionJob($user3, false)
+        $user4 = User::query()->offset(4)->first();
+        $user5 = User::query()->offset(5)->first();
+        $user6 = User::query()->offset(6)->first();
+
+        $users = User::query()->take(10)->offset(10)->get()->map(fn ($u) => new TestExceptionJob($u, false));
+
+        // dois chain dentro de um batch
+        Bus::batch([
+            ...$users,
+            [
+                new TestExceptionJob($user1, true),
+                new TestExceptionJob($user2, false),
+                new TestExceptionJob($user3, false)
+            ],
+            [
+                new TestExceptionJob($user4, false),
+                new TestExceptionJob($user5, true),
+                new TestExceptionJob($user6, false)
+            ]
         ])
         // ->catch(function (Batch $batch, Throwable $e) {
         //     // First batch job failure detected...
